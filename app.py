@@ -22,19 +22,8 @@ creds_dict = {
 
 # Authenticate using the credentials
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-credentials = ServiceAccountCredentials(
-    creds_dict["type"],
-    creds_dict["project_id"],
-    creds_dict["private_key_id"],
-    creds_dict["private_key"],
-    creds_dict["client_email"],
-    creds_dict["client_id"],
-    creds_dict["auth_uri"],
-    creds_dict["token_uri"],
-    creds_dict["auth_provider_x509_cert_url"],
-    creds_dict["client_x509_cert_url"])
+credentials = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 client1 = gspread.authorize(credentials)
-
 
 # Open the Google Sheet where feedback will be stored
 sheet = client1.open_by_url("https://docs.google.com/spreadsheets/d/1BrdD5vuTo4NtUm44PZOyY0Tvowp508OH_iAWNVnLdAk/edit?usp=sharing").sheet1
