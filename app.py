@@ -6,12 +6,25 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 client = OpenAI(api_key="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")
 # Set up Google Sheets API credentials
-scopes = [
-    "https://www.googleapis.com/auth/spreadsheets",  # Full access to Google Sheets
-    "https://www.googleapis.com/auth/drive.file"     # Access to manage files on Google Drive
-]
-creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scopes)
-client1 = gspread.authorize(creds)
+
+creds_dict = {
+    "type": st.secrets["google"]["type"],
+    "project_id": st.secrets["google"]["project_id"],
+    "private_key_id": st.secrets["google"]["private_key_id"],
+    "private_key": st.secrets["google"]["private_key"],
+    "client_email": st.secrets["google"]["client_email"],
+    "client_id": st.secrets["google"]["client_id"],
+    "auth_uri": st.secrets["google"]["auth_uri"],
+    "token_uri": st.secrets["google"]["token_uri"],
+    "auth_provider_x509_cert_url": st.secrets["google"]["auth_provider_x509_cert_url"],
+    "client_x509_cert_url": st.secrets["google"]["client_x509_cert_url"]
+}
+
+# Authenticate using the credentials
+scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+credentials = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+client1 = gspread.authorize(credentials)
+
 
 # Open the Google Sheet where feedback will be stored
 sheet = client1.open_by_url("https://docs.google.com/spreadsheets/d/1BrdD5vuTo4NtUm44PZOyY0Tvowp508OH_iAWNVnLdAk/edit?usp=sharing").sheet1
