@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Welcome to the Travel Assistant</h1>
+
+    <!-- Form to input travel preferences -->
+    <form action="/ask" method="POST">
+        <label for="user_input">What kind of trip are you planning?</label><br>
+        <input type="text" id="user_input" name="user_input" required><br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    {% if user_input %}
+        <h3>Your Input:</h3>
+        <p>{{ user_input }}</p>
+
+        <h3>Assistant's Response:</h3>
+        <p>{{ gpt_response }}</p>
+    {% endif %}
+
+    <h3>Conversation History:</h3>
+    <ul>
+        {% for message in conversation %}
+            <li><strong>{{ message.role }}:</strong> {{ message.content }}</li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
